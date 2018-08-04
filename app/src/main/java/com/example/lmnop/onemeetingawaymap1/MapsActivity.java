@@ -13,11 +13,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.lmnop.onemeetingawaymap1.Adapters.ListMeetingsAdapter;
 import com.example.lmnop.onemeetingawaymap1.DataBase.DataSource;
 import com.example.lmnop.onemeetingawaymap1.DataBase.MeetingsTable;
 import com.example.lmnop.onemeetingawaymap1.model.DataItemMeetings;
@@ -36,6 +39,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
@@ -59,10 +63,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public FusedLocationProviderClient fusedLocationProviderClient;
 
 
+    private RecyclerView listRecyclerView;
+    private ListMeetingsAdapter listAdapter;
+    public ArrayList<DataItemMeetings> meetingList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.fragment_meetings_list);
+        meetingList= new ArrayList<>();
+
+
+        listRecyclerView=(RecyclerView) findViewById(R.id.recyclerview);
+        listRecyclerView.setHasFixedSize(true);
+        listRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        listAdapter = new ListMeetingsAdapter(this, meetingList);
+        listRecyclerView.setAdapter(listAdapter);
+        /*setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -74,6 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mDataSource.seedDataBase(dataItemMeetingsList);
 
         getLocationPermission();
+        */
     }
 
 
